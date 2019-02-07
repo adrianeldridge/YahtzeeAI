@@ -1,0 +1,2 @@
+# YahtzeeAI
+AI for Yahtzee
