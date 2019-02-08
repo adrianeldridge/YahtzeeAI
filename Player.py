@@ -53,7 +53,7 @@ class Player:
 		if roll_number >= 3:
 			return max_val, max_turn
 		else:
-			for dice_rolled in self.possible_rolls:
+			for dice_rolled in self.select_possible_moves(dice, score_sheet):
 				scores = []
 				for i in range(20):
 					new_dice = dice.clone()
@@ -69,6 +69,24 @@ class Player:
 			return max_val, max_turn
 
 
+	def select_possible_moves(self, dice, score_sheet):
+		n = 20
+		selected_moves = dict()
+		for move in range(len(self.possible_rolls)):
+			score = 0
+			for i in range(n):
+				new_roll = dice.clone()
+				new_roll.roll(self.possible_rolls[move])
+				max_val, _ = self.select_max_move(new_roll, score_sheet)
+				score += max_val
+			score /= n
+			selected_moves[move] = score
+			
+		moves = list(sorted(selected_moves, key = selected_moves.get, reverse = True))[0:3]
+		selected = [self.possible_rolls[s] for s in moves]
+		return selected
+
+
 	def select_max_move(self, dice, score_sheet):
 		scorer = Scorer()
 		max_val = -100
@@ -77,7 +95,7 @@ class Player:
 			if score_sheet.sheet[t] == -1:
 				score = scorer.calc_score(t, dice)
 				if t >= 1 and t <= 6:
-					adjust = math.copysign(math.pow((((score - (3 * t)) / 63) * 35), 2), (score - (3 * t)))
+					adjust = math.copysign(math.pow((((score - (3 * t)) / 63.0) * 35), 2), (score - (3 * t)))
 					score += adjust
 				if t == 13:
 					turns_taken = sum([0 if i == -1 else 1 for i in score_sheet.sheet])
@@ -85,6 +103,7 @@ class Player:
 				if score > max_val:
 					max_val = score
 					max_turn = t
+
 
 
 		return max_val, max_turn
