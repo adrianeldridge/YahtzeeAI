@@ -6,5 +6,5 @@ class Move:
 		self.to_roll = to_roll
 		self.turn = turn
 
-	def roll(self):
+	def is_roll(self):
 		return self.roll

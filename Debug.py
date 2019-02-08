@@ -1,10 +1,11 @@
 from Die import Die
 from Dice import Dice
 from Scorer import Scorer
+from Game import Game
+from Player import Player
 
-dice = Dice(5)
-dice.roll([0,1,2,3,4])
-dice.print_dice()
-scorer = Scorer()
-dice_vec = scorer.convert(dice)
-print dice_vec
+player = Player("test")
+game = Game(player)
+score = game.play_game()
+print "TOTAL SCORE: " + str(score)
+

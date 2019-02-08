@@ -11,4 +11,14 @@ class Dice:
 
 	def print_dice(self):
 		print [d.get_value() for d in self.dice]
+
+	def get_values(self):
+		return [d.get_value() for d in self.dice]
+
+	def clone(self):
+		new_dice = Dice(len(self.dice))
+		for d in range(len(self.dice)):
+			new_dice.dice[d].value = self.dice[d].value
+
+		return new_dice
 	
